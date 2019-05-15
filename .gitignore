@@ -1,0 +1,10 @@
+*.c
+*.h
+*.out*
+results
+etalon
+tests
+*.log
+*.gch
+*.z
+*.txt
