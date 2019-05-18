@@ -10,3 +10,4 @@ tests
 *.txt
 .vscode
 temp
+*test*

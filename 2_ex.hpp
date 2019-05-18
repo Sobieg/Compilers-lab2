@@ -185,7 +185,9 @@ inline register_struct* add(register_struct* reg1, register_struct* reg2) {
 	str += ", ";
 	str += reg2->name;
 	outp(str.c_str());
-	reg2->free();
+	if (reg1 != reg2) {
+		reg2->free();
+	}
 	return reg1;
 }
 inline register_struct* add(register_struct* reg1, const char* mem2) {
@@ -211,7 +213,9 @@ inline register_struct* sub(register_struct* reg1, register_struct* reg2) {
 	str += ", ";
 	str += reg2->name;
 	outp(str.c_str());
-	reg2->free();
+	if (reg1 != reg2) {
+		reg2->free();
+	}
 	return reg1;
 }
 inline register_struct* sub(register_struct* reg1, const char* mem2) {
@@ -237,7 +241,9 @@ inline register_struct* mul(register_struct* reg1, register_struct* reg2) {
 	str += ", ";
 	str += reg2->name;
 	outp(str.c_str());
-	reg2->free();
+	if (reg1 != reg2) {
+		reg2->free();
+	}
 	return reg1;
 }
 inline register_struct* mul(register_struct* reg1, const char* mem2) {
@@ -263,7 +269,9 @@ inline register_struct* dv(register_struct* reg1, register_struct* reg2) {
 	str += ", ";
 	str += reg2->name;
 	outp(str.c_str());
-	reg2->free();
+	if (reg1 != reg2) {
+		reg2->free();
+	}
 	return reg1;
 }
 inline register_struct* dv(register_struct* reg1, const char* mem2) {
@@ -289,7 +297,9 @@ inline register_struct* mod(register_struct* reg1, register_struct* reg2) {
 	str += ", ";
 	str += reg2->name;
 	outp(str.c_str());
-	reg2->free();
+	if (reg1 != reg2) {
+		reg2->free();
+	}
 	return reg1;
 }
 inline register_struct* mod(register_struct* reg1, const char* mem2) {
