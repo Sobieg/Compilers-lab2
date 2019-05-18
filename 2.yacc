@@ -3,6 +3,7 @@
 	#include <fstream>
 	#include <stdlib.h>
 	#include <stdarg.h>
+	#include <cstring>
 	#include "2_ex.hpp"
 
 	static void print_token_value(FILE* file, int type, YYSTYPE value);
@@ -290,7 +291,7 @@ int main() {
 	lbl = 0;
 	init_regs();
 	system("rm -f 2_asm.txt");
-	yydebug = 1;
+	yydebug = 0;
 	yy_flex_debug = 0;
 	return yyparse();
 }

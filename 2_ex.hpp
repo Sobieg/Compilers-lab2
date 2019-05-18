@@ -8,6 +8,7 @@
 
 
 #define NUM_OF_REGISTERS 16
+#define INT_MAXX 1337
 
 
 
@@ -21,8 +22,8 @@ typedef struct register_struct {
 public:
 	void free() {
 		is_free = true;
-		value = INT_MAX;
-		var_name.clear();
+		value = INT_MAXX;
+		var_name.resize(0);
 	}
 } register_struct;
 
@@ -157,6 +158,11 @@ inline register_struct* mov(register_struct* reg1, const char* mem2) {
 }
 void jz(int lbl_p) {
 	std::string str = "\tjz\t";
+	str += std::to_string(lbl_p);
+	outp(str.c_str());
+}
+void jnz(int lbl_p) {
+	std::string str = "\tjnz\t";
 	str += std::to_string(lbl_p);
 	outp(str.c_str());
 }
@@ -297,56 +303,62 @@ inline register_struct* mod(register_struct* reg1, const char* mem2) {
 }
 register_struct* compLT(register_struct* reg1, register_struct* reg2) {
 	std::string str = "\tcompLT\t";
-	str += reg1->name;
-	str += ", ";
 	str += reg2->name;
+	str += ", ";
+	str += reg1->name;
 	outp(str.c_str());
 	reg2->free();
+	reg1->free();
 	return reg1;
 }
 register_struct* compGT(register_struct* reg1, register_struct* reg2) {
 	std::string str = "\tcompGT\t";
-	str += reg1->name;
-	str += ", ";
 	str += reg2->name;
+	str += ", ";
+	str += reg1->name;
 	outp(str.c_str());
 	reg2->free();
+	reg1->free();
 	return reg1;
 }
 register_struct* compGE(register_struct* reg1, register_struct* reg2) {
 	std::string str = "\tcompGE\t";
-	str += reg1->name;
-	str += ", ";
 	str += reg2->name;
+	str += ", ";
+	str += reg1->name;
 	outp(str.c_str());
 	reg2->free();
+	reg1->free();
 	return reg1;
 }
 register_struct* compLE(register_struct* reg1, register_struct* reg2) {
 	std::string str = "\tcompLE\t";
-	str += reg1->name;
-	str += ", ";
 	str += reg2->name;
+	str += ", ";
+	str += reg1->name;
 	outp(str.c_str());
 	reg2->free();
+	reg1->free();
 	return reg1;
 }
 register_struct* compNE(register_struct* reg1, register_struct* reg2) {
 	std::string str = "\tcompNE\t";
-	str += reg1->name;
-	str += ", ";
 	str += reg2->name;
+	str += ", ";
+	str += reg1->name;
 	outp(str.c_str());
 	reg2->free();
+	reg1->free();
 	return reg1;
 }
 register_struct* compEQ(register_struct* reg1, register_struct* reg2) {
 	std::string str = "\tcompEQ\t";
-	str += reg1->name;
-	str += ", ";
 	str += reg2->name;
+	str += ", ";
+	str += reg1->name;
 	outp(str.c_str());
 	reg2->free();
+	reg1->free();
 	return reg1;
 }
 void print(register_struct* reg) {
@@ -461,7 +473,7 @@ int ex(nodeType *p) {
 					ex(p->opr.op[0]); //прверка условия
 					lbl2 = lbl++;
 					//std::cout << "lbl2 = " << lbl2 << std::endl;
-					jz(lbl2);
+					jnz(lbl2);
 					ex(p->opr.op[1]);
 					jmp(lbl1);
 					lable(lbl2);
@@ -473,7 +485,7 @@ int ex(nodeType *p) {
 					lable(lbl1);
 					ex(p->opr.op[0]);
 					lbl2 = lbl++;
-					jz(lbl2);
+					jnz(lbl2);
 					jmp(lbl1);
 					lable(lbl2);
 					break;
@@ -483,7 +495,7 @@ int ex(nodeType *p) {
 				if(p->opr.nops == 3) {
 					/*if (expr) stmt else stmt*/
 					lbl1 = lbl++;
-					jz(lbl1);
+					jnz(lbl1);
 					ex(p->opr.op[1]);
 					lbl2 = lbl++;
 					jmp(lbl2);
@@ -495,7 +507,7 @@ int ex(nodeType *p) {
 				else if (p->opr.nops == 4) { 
 					/*if(expr) else stmt*/
 					lbl1 = lbl++;
-					jz(lbl1);
+					jnz(lbl1);
 					lbl2 = lbl++;
 					jmp(lbl2);
 					lable(lbl1);
@@ -507,7 +519,7 @@ int ex(nodeType *p) {
 					/*if(expr) stmt*/
 					//std::cout << "THERE" << std::endl;
 					lbl1 = lbl++;
-					jz(lbl1);
+					jnz(lbl1);
 					ex(p->opr.op[1]);
 					lable(lbl1);
 					break;
@@ -570,22 +582,36 @@ int ex(nodeType *p) {
 			default:
 				ex(p->opr.op[0]);
 				ex(p->opr.op[1]);
-				register_struct* r1 = lu.top();
-				lu.pop();
-				register_struct* r2 = lu.top();
-				lu.pop();
+				register_struct* r1;
+				register_struct* r2;
+				if (lu.size() > 0) {
+					r1 = lu.top();
+					lu.pop();
+				}
+				else {
+					//std::cout << "stack lu is empty" << std::endl;
+					//exit(1);
+				}
+				if (lu.size() > 0) {
+					r2 = lu.top();
+					lu.pop();
+				}
+				else {
+					//std::cout << "stack lu is empty" << std::endl;
+					//exit(1);
+				}
 				switch(p->opr.oper){
 					case PLUS_ASS: lu.push(add(r2, r1)); break;
 					case MIN_ASS: lu.push(sub(r2, r1)); break;
 					case DIV_ASS: lu.push(dv(r2, r1)); break;
 					case MOD_ASS: lu.push(mod(r2, r1)); break;
 					case MULT_ASS: lu.push(mul(r2, r1)); break;
-					case EQ: lu.push(compEQ(r2, r1)); break;
-					case NOTEQ: lu.push(compNE(r2, r1)); break;
-					case MORE_EQ: lu.push(compGE(r2, r1)); break;
-					case LESS_EQ: lu.push(compLE(r2, r1)); break;
-					case '<': lu.push(compLT(r2, r1)); break;
-					case '>': lu.push(compGT(r2, r1)); break;
+					case EQ: compEQ(r2, r1); break;
+					case NOTEQ: compNE(r2, r1); break;
+					case MORE_EQ: compGE(r2, r1); break;
+					case LESS_EQ: compLE(r2, r1); break;
+					case '<': compLT(r2, r1); break;
+					case '>': compGT(r2, r1); break;
 				 	case '+': lu.push(add(r2, r1)); break;
 					case '*': lu.push(mul(r2, r1)); break;
 					case '/': lu.push(dv(r2, r1)); break;
