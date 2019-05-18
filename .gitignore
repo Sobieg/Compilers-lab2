@@ -8,3 +8,5 @@ tests
 *.gch
 *.z
 *.txt
+.vscode
+temp

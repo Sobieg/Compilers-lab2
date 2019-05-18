@@ -39,7 +39,7 @@ external_headers: 2_structs.hpp 2_ex.hpp
 git:
 	$(GIT) checkout everymake-commit
 	$(GIT) add .
-	$(GIT) commit -am "make commit on $(shell date)"
+#	$(GIT) commit -am "make commit on $(shell date)"
 
 compile: lex.yy.c y.tab.c y.tab.h external_headers git 
 	$(CXX) lex.yy.c y.tab.c
