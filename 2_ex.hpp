@@ -23,7 +23,13 @@ public:
 	void free() {
 		is_free = true;
 		value = INT_MAXX;
-		var_name.resize(0);
+		clearvarname();
+	}
+	void clearvarname(){
+		if (!var_name.empty()) {
+			var_name.clear();
+		
+		}
 	}
 } register_struct;
 
@@ -97,10 +103,8 @@ void lable(int lbl_op) {
 	outp(str.c_str());
 }
 
-void load(register_struct* reg) {
-	if (!reg->var_name.empty()) {
-		mov(reg->var_name.c_str(), reg);
-	}
+void load(register_struct* reg, const char* name) {
+	mov(name, reg);
 }
 
 
@@ -177,6 +181,7 @@ inline register_struct* add(register_struct* reg1, int num) {
 	str += ", ";
 	str += std::to_string(num);
 	outp(str.c_str());
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* add(register_struct* reg1, register_struct* reg2) {
@@ -185,9 +190,10 @@ inline register_struct* add(register_struct* reg1, register_struct* reg2) {
 	str += ", ";
 	str += reg2->name;
 	outp(str.c_str());
-	if (reg1 != reg2) {
+	if(reg1 != reg2) {
 		reg2->free();
 	}
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* add(register_struct* reg1, const char* mem2) {
@@ -197,6 +203,7 @@ inline register_struct* add(register_struct* reg1, const char* mem2) {
 	str += mem2;
 	str += "]";
 	outp(str.c_str());
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* sub(register_struct* reg1, int num) {
@@ -205,6 +212,7 @@ inline register_struct* sub(register_struct* reg1, int num) {
 	str += ", ";
 	str += std::to_string(num);
 	outp(str.c_str());
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* sub(register_struct* reg1, register_struct* reg2) {
@@ -213,9 +221,10 @@ inline register_struct* sub(register_struct* reg1, register_struct* reg2) {
 	str += ", ";
 	str += reg2->name;
 	outp(str.c_str());
-	if (reg1 != reg2) {
+	if(reg1 != reg2) {
 		reg2->free();
 	}
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* sub(register_struct* reg1, const char* mem2) {
@@ -225,6 +234,7 @@ inline register_struct* sub(register_struct* reg1, const char* mem2) {
 	str += mem2;
 	str += "]";
 	outp(str.c_str());
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* mul(register_struct* reg1, int num) {
@@ -233,6 +243,7 @@ inline register_struct* mul(register_struct* reg1, int num) {
 	str += ", ";
 	str += std::to_string(num);
 	outp(str.c_str());
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* mul(register_struct* reg1, register_struct* reg2) {
@@ -241,9 +252,10 @@ inline register_struct* mul(register_struct* reg1, register_struct* reg2) {
 	str += ", ";
 	str += reg2->name;
 	outp(str.c_str());
-	if (reg1 != reg2) {
+	if(reg1 != reg2) {
 		reg2->free();
 	}
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* mul(register_struct* reg1, const char* mem2) {
@@ -253,6 +265,7 @@ inline register_struct* mul(register_struct* reg1, const char* mem2) {
 	str += mem2;
 	str += "]";
 	outp(str.c_str());
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* dv(register_struct* reg1, int num) {
@@ -261,6 +274,7 @@ inline register_struct* dv(register_struct* reg1, int num) {
 	str += ", ";
 	str += std::to_string(num);
 	outp(str.c_str());
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* dv(register_struct* reg1, register_struct* reg2) {
@@ -269,9 +283,10 @@ inline register_struct* dv(register_struct* reg1, register_struct* reg2) {
 	str += ", ";
 	str += reg2->name;
 	outp(str.c_str());
-	if (reg1 != reg2) {
+	if(reg1 != reg2) {
 		reg2->free();
 	}
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* dv(register_struct* reg1, const char* mem2) {
@@ -281,6 +296,7 @@ inline register_struct* dv(register_struct* reg1, const char* mem2) {
 	str += mem2;
 	str += "]";
 	outp(str.c_str());
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* mod(register_struct* reg1, int num) {
@@ -289,6 +305,7 @@ inline register_struct* mod(register_struct* reg1, int num) {
 	str += ", ";
 	str += std::to_string(num);
 	outp(str.c_str());
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* mod(register_struct* reg1, register_struct* reg2) {
@@ -297,9 +314,10 @@ inline register_struct* mod(register_struct* reg1, register_struct* reg2) {
 	str += ", ";
 	str += reg2->name;
 	outp(str.c_str());
-	if (reg1 != reg2) {
+	if(reg1 != reg2) {
 		reg2->free();
 	}
+	reg1->clearvarname();
 	return reg1;
 }
 inline register_struct* mod(register_struct* reg1, const char* mem2) {
@@ -309,6 +327,7 @@ inline register_struct* mod(register_struct* reg1, const char* mem2) {
 	str += mem2;
 	str += "]";
 	outp(str.c_str());
+	reg1->clearvarname();
 	return reg1;
 }
 register_struct* compLT(register_struct* reg1, register_struct* reg2) {
@@ -399,13 +418,15 @@ register_struct* lnot(register_struct* reg) {
 	return reg;
 }
 inline register_struct* inc(register_struct* reg1) {
+	std::string name = reg1->var_name;
 	add(reg1, 1);
-	load(reg1);
+	load(reg1, name.c_str());
 	return reg1;
 }
 inline register_struct* dec(register_struct* reg1) {
+	std::string name = reg1->var_name;
 	sub(reg1, 1);
-	load(reg1);
+	load(reg1, name.c_str());
 	return reg1;
 }
 
@@ -620,8 +641,7 @@ int ex(nodeType *p) {
 					case NOTEQ: compNE(r2, r1); break;
 					case MORE_EQ: compGE(r2, r1); break;
 					case LESS_EQ: compLE(r2, r1); break;
-					case '<': compLT(r2, r1); break;
-					case '>': compGT(r2, r1); break;
+					case '<': compLT(r2, r1); break;					case '>': compGT(r2, r1); break;
 				 	case '+': lu.push(add(r2, r1)); break;
 					case '*': lu.push(mul(r2, r1)); break;
 					case '/': lu.push(dv(r2, r1)); break;
