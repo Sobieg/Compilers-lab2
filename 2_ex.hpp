@@ -641,7 +641,8 @@ int ex(nodeType *p) {
 					case NOTEQ: compNE(r2, r1); break;
 					case MORE_EQ: compGE(r2, r1); break;
 					case LESS_EQ: compLE(r2, r1); break;
-					case '<': compLT(r2, r1); break;					case '>': compGT(r2, r1); break;
+					case '<': compLT(r2, r1); break;					
+					case '>': compGT(r2, r1); break;
 				 	case '+': lu.push(add(r2, r1)); break;
 					case '*': lu.push(mul(r2, r1)); break;
 					case '/': lu.push(dv(r2, r1)); break;
